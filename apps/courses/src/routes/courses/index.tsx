@@ -117,7 +117,7 @@ export default ({ which }: PropType) => {
   // Get our data from the CMS
   const { data, loading } = useFirebaseSanity(which, params);
 
-  // TODO: https://github.com/OpenMined/openmined/issues/54
+  // TODO: https://github.com/OpenMined/courses-app/issues/54
   // const newPermissionGate = useCoursePermissionGate(
   //   dbCourse,
   //   data,

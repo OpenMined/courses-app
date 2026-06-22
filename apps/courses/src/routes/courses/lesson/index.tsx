@@ -50,7 +50,7 @@ export default ({
 }: CoursePagesProp) => {
   const db = useFirestore();
   const toast = useToast();
-  // TODO: https://github.com/OpenMined/openmined/issues/53
+  // TODO: https://github.com/OpenMined/courses-app/issues/53
   // const navigate = useNavigate();
 
   const {
@@ -74,7 +74,7 @@ export default ({
   const onLessonStart = () => {
     handleLessonStart(db, user.uid, course, ts, progress, lesson)
       .then(() => {
-        // TODO: https://github.com/OpenMined/openmined/issues/53
+        // TODO: https://github.com/OpenMined/courses-app/issues/53
         // navigate(`/courses/${course}/${lesson}/${firstConcept}`);
         window.location.href = `/courses/${course}/${lesson}/${firstConcept}`;
       })

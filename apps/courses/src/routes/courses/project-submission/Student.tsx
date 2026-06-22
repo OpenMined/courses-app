@@ -189,7 +189,7 @@ export default ({
   const db = useFirestore();
   const toast = useToast();
   const [hasClickedButton, setHasClickedButton] = useState(false);
-  // TODO: https://github.com/OpenMined/openmined/issues/53
+  // TODO: https://github.com/OpenMined/courses-app/issues/53
   // const navigate = useNavigate();
 
   const {
@@ -223,7 +223,7 @@ export default ({
       ).length === 3 &&
       !attemptData
     ) {
-      // TODO: https://github.com/OpenMined/openmined/issues/53
+      // TODO: https://github.com/OpenMined/courses-app/issues/53
       // navigate(`/courses/${course}/project/${part}/3`);
       window.location.href = `/courses/${course}/project/${part}/3`;
     }
@@ -257,7 +257,7 @@ export default ({
         preSubmitModal.onClose();
 
         // Once that's done, reload the projects in the default viewing state
-        // TODO: https://github.com/OpenMined/openmined/issues/53
+        // TODO: https://github.com/OpenMined/courses-app/issues/53
         // navigate(`/courses/${course}/project`);
         window.location.href = `/courses/${course}/project`;
       })
@@ -274,7 +274,7 @@ export default ({
       >
         <Breadcrumb spacing={2} color="gray.700">
           <BreadcrumbItem>
-            {/* TODO: https://github.com/OpenMined/openmined/issues/53 */}
+            {/* TODO: https://github.com/OpenMined/courses-app/issues/53 */}
             <BreadcrumbLink href={`/courses/${course}/project`} target="_self">
               {/* <BreadcrumbLink as={RRDLink} to={`/courses/${course}/project`}> */}
               {projectTitle}
@@ -358,7 +358,7 @@ export default ({
           <ColoredTabs mb={8} content={tabsContent} />
           <Flex justify="space-between" align="center">
             <Button
-              // TODO: https://github.com/OpenMined/openmined/issues/53
+              // TODO: https://github.com/OpenMined/courses-app/issues/53
               // as={RRDLink}
               // to={`/courses/${course}/project`}
               as="a"

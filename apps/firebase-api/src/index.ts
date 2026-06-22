@@ -151,5 +151,5 @@ exports.statsActiveUserDecrease = functions
 // Set up Sanity API requests
 exports.sanity = functions.region('europe-west1').https.onCall(sanity);
 
-// TODO: https://github.com/OpenMined/openmined/issues/52
+// TODO: https://github.com/OpenMined/courses-app/issues/52
 // exports.ssr = functions.region('europe-west1').https.onRequest(ssr);

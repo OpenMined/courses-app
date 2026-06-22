@@ -111,7 +111,7 @@ const DrawerItem = ({
 
               linkProps._hover = { color: linkProps.color };
 
-              // TODO: https://github.com/OpenMined/openmined/issues/53
+              // TODO: https://github.com/OpenMined/courses-app/issues/53
               if (linkProps.to) {
                 linkProps.as = 'a';
                 linkProps.to = null;

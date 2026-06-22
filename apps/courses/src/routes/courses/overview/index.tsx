@@ -186,7 +186,7 @@ export default ({ course, page, progress, user }: CoursePagesProp) => {
       )}
       {isCurrent && isTakingCourse && parts && (
         <Flex justify="flex-end" mt={4}>
-          {/* TODO: https://github.com/OpenMined/openmined/issues/53 */}
+          {/* TODO: https://github.com/OpenMined/courses-app/issues/53 */}
           {/* <Link to={resumeLink}> */}
           <a href={resumeLink} target="_self">
             <Flex align="center">
@@ -382,7 +382,7 @@ export default ({ course, page, progress, user }: CoursePagesProp) => {
                 <Button
                   colorScheme="blue"
                   size="lg"
-                  // TODO: https://github.com/OpenMined/openmined/issues/53
+                  // TODO: https://github.com/OpenMined/courses-app/issues/53
                   // as={courseStartLink ? Link : null}
                   // to={courseStartLink}
                   as={courseStartLink ? 'a' : null}
@@ -408,7 +408,7 @@ export default ({ course, page, progress, user }: CoursePagesProp) => {
                   <Button
                     colorScheme="black"
                     size="lg"
-                    // TODO: https://github.com/OpenMined/openmined/issues/53
+                    // TODO: https://github.com/OpenMined/courses-app/issues/53
                     // as={Link}
                     // to={resumeLink}
                     as="a"
@@ -496,7 +496,7 @@ export default ({ course, page, progress, user }: CoursePagesProp) => {
             <Button
               colorScheme="black"
               size="lg"
-              // TODO: https://github.com/OpenMined/openmined/issues/53
+              // TODO: https://github.com/OpenMined/courses-app/issues/53
               // as={courseStartLink ? Link : null}
               // to={courseStartLink}
               as={courseStartLink ? 'a' : null}
@@ -511,7 +511,7 @@ export default ({ course, page, progress, user }: CoursePagesProp) => {
             <Button
               colorScheme="black"
               size="lg"
-              // TODO: https://github.com/OpenMined/openmined/issues/53
+              // TODO: https://github.com/OpenMined/courses-app/issues/53
               // as={Link}
               // to={resumeLink}
               as="a"

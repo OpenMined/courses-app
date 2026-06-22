@@ -1,10 +1,10 @@
-# OpenMined Web Monorepo
+# OpenMined Courses
 
-Welcome to the OpenMined web monorepo, the home of all of OpenMined's many websites. Below are some basic instructions for getting this repository running on your machine.
+This repository powers [OpenMined Courses](https://courses.openmined.org), our platform for free privacy-preserving AI courses. It's an [Nx](https://nx.dev) monorepo containing the Courses web app along with its Firebase backend and Sanity CMS. Below are basic instructions for getting it running on your machine.
 
 ## Support
 
-If you're looking for support about the courses, please go the [Courses Discussion Board](https://github.com/OpenMined/courses/discussions). If you've found a bug, or have a suggestion for an improvement to the Courses site, or any of our websites, [please file an issue here](https://github.com/OpenMined/openmined/issues).
+If you're looking for support about the courses, please go the [Courses Discussion Board](https://github.com/OpenMined/courses/discussions). If you've found a bug, or have a suggestion for an improvement to the Courses site, or any of our websites, [please file an issue here](https://github.com/OpenMined/courses-app/issues).
 
 ## Contributing
 

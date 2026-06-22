@@ -41,7 +41,7 @@ const AttemptedView = ({
 };
 
 export default ({ content, course, onBeginProjectPart, ...props }) => {
-  // TODO: https://github.com/OpenMined/openmined/issues/53
+  // TODO: https://github.com/OpenMined/courses-app/issues/53
   // const navigate = useNavigate();
 
   // The text to show when the user is pending a submission review
@@ -103,7 +103,7 @@ export default ({ content, course, onBeginProjectPart, ...props }) => {
                 onClick={() => {
                   if (status === 'not-started') {
                     onBeginProjectPart(_key).then(() => {
-                      // TODO: https://github.com/OpenMined/openmined/issues/53
+                      // TODO: https://github.com/OpenMined/courses-app/issues/53
                       // navigate(`/courses/${course}/project/${_key}`);
                       window.location.href = `/courses/${course}/project/${_key}`;
                     });
@@ -112,7 +112,7 @@ export default ({ content, course, onBeginProjectPart, ...props }) => {
                       ({ status }) => status === 'pending'
                     );
 
-                    // TODO: https://github.com/OpenMined/openmined/issues/53
+                    // TODO: https://github.com/OpenMined/courses-app/issues/53
                     // navigate(
                     //   `/courses/${course}/project/${_key}/${attempt + 1}`
                     // );
@@ -120,7 +120,7 @@ export default ({ content, course, onBeginProjectPart, ...props }) => {
                       attempt + 1
                     }`;
                   } else {
-                    // TODO: https://github.com/OpenMined/openmined/issues/53
+                    // TODO: https://github.com/OpenMined/courses-app/issues/53
                     // navigate(`/courses/${course}/project/${_key}`);
                     window.location.href = `/courses/${course}/project/${_key}`;
                   }
