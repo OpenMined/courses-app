@@ -359,7 +359,7 @@ export const useIsAllowedToAccessPage = (
       let url = `/courses/${course}/${suggestedPage.lesson}`;
       if (suggestedPage.concept) url = `${url}/${suggestedPage.concept}`;
 
-      // TODO: https://github.com/OpenMined/openmined/issues/53
+      // TODO: https://github.com/OpenMined/courses-app/issues/53
       // navigate(url);
       window.location.href = url;
     } else {
@@ -370,7 +370,7 @@ export const useIsAllowedToAccessPage = (
   return isAllowed;
 };
 
-// TODO: https://github.com/OpenMined/openmined/issues/54
+// TODO: https://github.com/OpenMined/courses-app/issues/54
 export const useCoursePermissionGate = (user, lessons, page, params) => {
   // For pages that don't require any permissions or redirection...
   const permissionless = ['search', 'overview'];

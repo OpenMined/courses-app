@@ -284,7 +284,7 @@ export default ({
                 size="lg"
                 onClick={() =>
                   onCompleteLesson().then(() => {
-                    // TODO: https://github.com/OpenMined/openmined/issues/53
+                    // TODO: https://github.com/OpenMined/courses-app/issues/53
                     // navigate(
                     //   `/courses/${course}/${
                     //     typeof nextLesson === 'string'

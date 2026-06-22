@@ -4,7 +4,7 @@ Welcome to the OpenMined web monorepo, the home of all of OpenMined's many websi
 
 ## Support
 
-If you're looking for support about the courses, please go the [Courses Discussion Board](https://github.com/OpenMined/courses/discussions). If you've found a bug, or have a suggestion for an improvement to the Courses site, or any of our websites, [please file an issue here](https://github.com/OpenMined/openmined/issues).
+If you're looking for support about the courses, please go the [Courses Discussion Board](https://github.com/OpenMined/courses/discussions). If you've found a bug, or have a suggestion for an improvement to the Courses site, or any of our websites, [please file an issue here](https://github.com/OpenMined/courses-app/issues).
 
 ## Contributing
 
