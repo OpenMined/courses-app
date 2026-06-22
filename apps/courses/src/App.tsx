@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useEffect } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import { Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import {
@@ -6,7 +6,6 @@ import {
   preloadFirestore,
   preloadFunctions,
   useFirebaseApp,
-  useFirestore,
 } from 'reactfire';
 
 import Routes from './routes';
@@ -14,53 +13,16 @@ import Routes from './routes';
 import Loading from './components/Loading';
 
 import { SuspenseWithPerf } from 'reactfire';
-import useToast, { toastConfig } from './components/Toast';
 
 const history = createBrowserHistory();
 
-const Firebase = () => {
-  const firestore = useFirestore();
-  const toast = useToast();
-
-  useEffect(() => {
-    try {
-      firestore.enablePersistence({ synchronizeTabs: true }).catch((error) => {
-        if (error.code === 'failed-precondition') {
-          toast({
-            ...toastConfig,
-            title: 'Error',
-            description: error.message,
-            status: 'error',
-          });
-        } else if (error.code === 'unimplemented') {
-          toast({
-            ...toastConfig,
-            title: 'Error',
-            description:
-              'This browser is not fully compatible with offline mode. While you do not have to, we suggest you use a different browser.',
-            status: 'error',
-          });
-        } else {
-          toast({
-            ...toastConfig,
-            title: 'Error',
-            description: error.message,
-            status: 'error',
-          });
-        }
-      });
-    } catch (error) {
-      toast({
-        ...toastConfig,
-        title: 'Error',
-        description: error.message,
-        status: 'error',
-      });
-    }
-  }, []);
-
-  return null;
-};
+// NOTE: Firestore offline persistence (`enablePersistence`) is intentionally NOT enabled.
+// In Safari/WebKit its IndexedDB initialization intermittently never settles, and because
+// Firestore queues every read behind persistence init, the app hung forever on the
+// app-wide Suspense loader (the long-standing "infinite loading after login" bug — verified
+// 2026-06-19: `enablePersistence` START with no resolve/reject, zero Listen/channel requests
+// on the wire; disabling it makes reads resolve in ~270ms). `experimentalForceOwningTab` did
+// not cure it. The app reads live from the network and does not rely on offline caching.
 
 const preloadSDKs = (firebaseApp) => {
   Promise.all([
@@ -85,7 +47,6 @@ const preloadSDKs = (firebaseApp) => {
           ssl: false,
           experimentalForceLongPolling: true,
         });
-        firestore().enablePersistence({ experimentalForceOwningTab: true });
       },
     }),
     // TODO: Create a bucket for dev purposes only
@@ -98,6 +59,18 @@ const preloadSDKs = (firebaseApp) => {
     // }),
   ]);
 };
+
+// Real browsers (non-Cypress): force Firestore to use long-polling instead of the default
+// streaming WebChannel. This is a Safari/WebChannel compatibility safety measure and is the
+// transport configuration validated working in Safari (2026-06-19). It is NOT the fix for
+// the infinite-loading bug — that was offline persistence (see note above).
+const preloadProdFirestore = (firebaseApp) =>
+  preloadFirestore({
+    firebaseApp,
+    setup: (firestore) => {
+      firestore().settings({ experimentalForceLongPolling: true });
+    },
+  });
 
 const App = () => {
   const [action, setAction] = useState(history.action);
@@ -115,12 +88,13 @@ const App = () => {
   // @ts-ignore
   if (window.Cypress) {
     preloadSDKs(firebaseApp);
+  } else {
+    preloadProdFirestore(firebaseApp);
   }
 
   return (
     <Router action={action} location={location} navigator={history}>
       <SuspenseWithPerf fallback={<Loading />} traceId={location.pathname}>
-        <Firebase />
         <Routes />
       </SuspenseWithPerf>
     </Router>
