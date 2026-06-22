@@ -6,6 +6,7 @@ import { Box } from '@chakra-ui/react';
 
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import AuthReady from '../components/AuthReady';
 
 import Homepage from './homepage';
 import Signup from './users/sign-up';
@@ -43,7 +44,7 @@ const RouteWrapper = ({
       display="grid"
       gridTemplateRows={!noFooter ? '1fr' : '1fr auto'}
     >
-      {children}
+      <AuthReady>{children}</AuthReady>
       {!noFooter && <Footer />}
     </Box>
   </>
