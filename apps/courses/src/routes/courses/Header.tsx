@@ -144,14 +144,13 @@ export default ({
       onClick: () =>
         auth
           .signOut()
-          .then(() =>
-            toast({
-              ...toastConfig,
-              title: 'Sign out successful',
-              description: 'Come back soon!',
-              status: 'success',
-            })
-          )
+          // Full reload on logout: clears reactfire's global query-observable cache
+          // (keyed by path, never evicted) and the auth-ready prime, so a re-login is a
+          // clean cold load instead of reusing a stale users/{uid}/courses observable
+          // that crashes on same-user re-login.
+          .then(() => {
+            window.location.assign('/');
+          })
           .catch((error) => handleErrors(toast, error)),
     },
   ];
