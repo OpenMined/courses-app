@@ -179,7 +179,7 @@ const Controls = ({
   total,
   onCompleteConcept,
 }) => {
-  // TODO: https://github.com/OpenMined/openmined/issues/53
+  // TODO: https://github.com/OpenMined/courses-app/issues/53
   // const navigate = useNavigate();
 
   return (
@@ -189,7 +189,7 @@ const Controls = ({
           window.scrollTo({ top: 0, behavior: 'smooth' });
 
           setTimeout(() => {
-            // TODO: https://github.com/OpenMined/openmined/issues/53
+            // TODO: https://github.com/OpenMined/courses-app/issues/53
             // navigate(backLink);
             window.location.href = backLink;
           }, 500);
@@ -208,7 +208,7 @@ const Controls = ({
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
             setTimeout(() => {
-              // TODO: https://github.com/OpenMined/openmined/issues/53
+              // TODO: https://github.com/OpenMined/courses-app/issues/53
               // navigate(nextLink);
               window.location.href = nextLink;
             }, 500);
