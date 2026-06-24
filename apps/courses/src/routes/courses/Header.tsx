@@ -309,23 +309,23 @@ export default ({
         }
         content={sections}
       />
-      <CourseDrawer
-        isOpen={isRightDrawerOpen}
-        onOpen={onRightDrawerOpen}
-        onClose={onRightDrawerClose}
-        placement="right"
-        header={
-          <RRDLink to="/" onClick={onRightDrawerClose}>
-            <Image
-              src={logo}
-              alt="OpenMined Courses"
-              width={[160, null, 200]}
-              style={{ filter: 'invert(1) brightness(2)' }}
-            />
-          </RRDLink>
-        }
-        content={rightDrawerSections}
-      />
+      {/*<CourseDrawer*/}
+        {/*isOpen={isRightDrawerOpen}*/}
+        {/*onOpen={onRightDrawerOpen}*/}
+        {/*onClose={onRightDrawerClose}*/}
+        {/*placement="right"*/}
+        {/*header={*/}
+          {/*<RRDLink to="/" onClick={onRightDrawerClose}>*/}
+            {/*<Image*/}
+              {/*src={logo}*/}
+              {/*alt="OpenMined Courses"*/}
+              {/*width={[160, null, 200]}*/}
+              {/*style={{ filter: 'invert(1) brightness(2)' }}*/}
+            {/*/>*/}
+          {/*</RRDLink>*/}
+        {/*}*/}
+        {/*content={rightDrawerSections}*/}
+      {/*/>*/}
     </Box>
   );
 };

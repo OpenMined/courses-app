@@ -101,13 +101,14 @@ const DrawerItem = ({
               if (status === 'completed') {
                 linkProps.color = 'white';
                 icon = faCheckCircle;
-              } else if (status === 'available') {
+              } else if (status === 'available' || status === 'unavailable') {
                 linkProps.color = 'gray.400';
                 icon = type ? (type === 'video' ? faPlayCircle : faFile) : null;
-              } else if (status === 'unavailable') {
-                linkProps.color = 'gray.700';
-                icon = type ? (type === 'video' ? faPlayCircle : faFile) : null;
               }
+              // else if (status === 'unavailable') {
+              //   linkProps.color = 'gray.700';
+              //   icon = type ? (type === 'video' ? faPlayCircle : faFile) : null;
+              // }
 
               linkProps._hover = { color: linkProps.color };
 
@@ -159,6 +160,7 @@ const DrawerItem = ({
 );
 
 export default ({ isOpen, onOpen, onClose, header, content, ...props }) => {
+  console.log("Sections", content)
   const [sectionIndexes, setSectionIndexes] = useState([0]);
 
   const openAccordionItem = (index) =>

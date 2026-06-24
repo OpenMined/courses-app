@@ -130,14 +130,14 @@ export default ({ course, page, progress, user }: CoursePagesProp) => {
       {parts && (
         <List spacing={2} mt={4}>
           {parts.map(({ title, _id, type, _key }, index) => {
-            let isComplete = false;
+            let isComplete = true;
 
-            if (progress) {
-              isComplete =
-                _id && !_key
-                  ? hasCompletedConcept(progress, lessonId, _id)
-                  : hasCompletedProjectPart(progress, _key);
-            }
+            // if (progress) {
+            //   isComplete =
+            //     _id && !_key
+            //       ? hasCompletedConcept(progress, lessonId, _id)
+            //       : hasCompletedProjectPart(progress, _key);
+            // }
 
             let icon;
 

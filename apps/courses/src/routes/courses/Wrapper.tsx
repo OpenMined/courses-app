@@ -20,12 +20,13 @@ const genDrawerSections = (
   course,
   lesson
 ) => {
+  console.log("Drawer data", data, progress)
   const sections = [
     {
       title: type === 'lessons' ? 'Lessons' : 'Concepts',
       icon: type === 'lessons' ? faBookOpen : faCube,
       fields: data.map(({ _id, title, ...rest }, index) => {
-        let status = 'unavailable';
+        let status = 'available';
 
         if (type === 'lessons') {
           if (hasCompletedLesson(progress, _id)) {
