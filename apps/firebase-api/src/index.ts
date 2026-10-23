@@ -23,7 +23,7 @@ import {
   calculateCompletedResignedReviews,
 } from './app/review';
 import { completeCourse } from './app/courses';
-import { sendEmail } from './app/email';
+import { sendEmailIfTrusted, EMAIL_SECRETS } from './app/email';
 import sanity from './app/sanity';
 import { onCourseSubmissionUpdate } from './app/submissions';
 import { addUniqueNumberToUser, addUNumToAllUsers } from './app/users';
@@ -70,34 +70,39 @@ exports.addUniqueNumberToAllUsers = functions
   .runWith({ memory: '2GB', timeoutSeconds: 540 })
   .https.onRequest(addUNumToAllUsers);
 
-// Send the user an email when they sign up
+// Send the user an email when they sign up (password sign-ups get Firebase's
+// verification email instead, so an unverified address is never welcomed)
 exports.sendWelcomeEmail = functions
   .region('europe-west1')
+  .runWith({ secrets: EMAIL_SECRETS })
   .auth.user()
-  .onCreate((user) => sendEmail('createAccount', user.email, { user }));
+  .onCreate((user) => sendEmailIfTrusted('createAccount', user, { user }));
 
 // Send the user an email when they delete their account
 exports.sendByeEmail = functions
   .region('europe-west1')
+  .runWith({ secrets: EMAIL_SECRETS })
   .auth.user()
-  .onDelete((user) => sendEmail('deleteAccount', user.email, { user }));
+  .onDelete((user) => sendEmailIfTrusted('deleteAccount', user, { user }));
 
 // Send the user an email when they start a course
 exports.startCourse = functions
   .region('europe-west1')
+  .runWith({ secrets: EMAIL_SECRETS })
   .firestore.document('users/{userId}/courses/{courseId}')
   .onCreate(async (snap, context) => {
     await admin
       .auth()
       .getUser(context.params.userId)
-      .then((user) => {
-        return sendEmail('startCourse', user.email, { data: snap.data() });
-      });
+      .then((user) =>
+        sendEmailIfTrusted('startCourse', user, { data: snap.data() })
+      );
   });
 
 // Send the user an email when they receive a project review
 exports.receiveReview = functions
   .region('europe-west1')
+  .runWith({ secrets: EMAIL_SECRETS })
   .firestore.document(
     'users/{userId}/courses/{courseId}/submissions/{submissionId}'
   )

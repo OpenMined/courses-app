@@ -50,6 +50,36 @@ Firebase is the primary backend for all of OpenMined's websites. If you want to 
 
 - `yarn test firebase-api` - Runs all the tests for the our Firebase backend
 
+Cloud Functions run on Node 22. The webpack 4 toolchain needs the legacy OpenSSL provider on modern Node:
+
+```sh
+NODE_OPTIONS=--openssl-legacy-provider yarn build firebase-api --prod
+```
+
+To run the functions locally, start the emulators against a `demo-` project ID, which Firebase never connects to real resources. Functions that send email read `RESEND_API_KEY`; locally, put a placeholder in a `.secret.local` file at the repo root (it is gitignored):
+
+```sh
+echo 'RESEND_API_KEY=re_placeholder' > .secret.local
+npx firebase-tools@13 emulators:start --project demo-courses --only auth,functions,firestore
+```
+
+#### Email
+
+Course emails (welcome, course started, project reviewed, account deleted) are sent through [Resend](https://resend.com) from `no-reply@openmined.org`, with replies going to `info@openmined.org`. The API key is a Firebase secret, set once per project with `firebase functions:secrets:set RESEND_API_KEY`.
+
+Welcome, course-started and goodbye emails only go to addresses we know are real: verified ones, or ones that came from GitHub or Google sign-in. Unverified password sign-ups get Firebase's own verification email instead. This keeps bot sign-ups from bouncing mail and hurting openmined.org's sender reputation. Skipped emails are logged.
+
+#### Deploying functions
+
+Deploy functions **by name**. The codebase exports some functions that are not deployed in production, and a bare `firebase deploy --only functions` would create them. The functions currently deployed from this repo with the Node 22 runtime are:
+
+```sh
+npx firebase-tools@13 deploy --project production \
+  --only functions:sendWelcomeEmail,functions:sendByeEmail,functions:startCourse,functions:receiveReview
+```
+
+See [BACKLOG.md](BACKLOG.md) for the rest of the functions and other known issues.
+
 #### Sanity CMS
 
 Sanity is the primary CMS for all of OpenMined's websites. You must have a user account to change any actual values, however, if you want to run it on your machine, you have access to the following commands:

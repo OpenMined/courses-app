@@ -4,7 +4,8 @@
     "indexes": "apps/firebase-api/firestore.indexes.json"
   },
   "functions": {
-    "source": "/"
+    "source": "/",
+    "runtime": "nodejs22"
   },
   "hosting": [
     {

@@ -1,3 +1,4 @@
+import admin from 'firebase-admin';
 import { logger } from 'firebase-functions';
 import nodemailer from 'nodemailer';
 
@@ -338,20 +339,47 @@ const contentTypes = {
   }),
 };
 
+// Functions that send email must list this secret in runWith({ secrets }).
+export const EMAIL_SECRETS = ['RESEND_API_KEY'];
+
+// Only email addresses we know belong to someone: verified ones, or ones that
+// came from an OAuth provider (GitHub, Google). Bot sign-ups with made-up
+// addresses would otherwise bounce and hurt openmined.org's sender reputation.
+export const hasTrustedEmail = (user: admin.auth.UserRecord) =>
+  !!user.email &&
+  (user.emailVerified ||
+    user.providerData.some((p) => p.providerId !== 'password'));
+
+export const sendEmailIfTrusted = (
+  type: string,
+  user: admin.auth.UserRecord,
+  data: any
+) => {
+  if (!hasTrustedEmail(user)) {
+    logger.info(`Skipped "${type}" email: unverified address`, {
+      uid: user.uid,
+    });
+    return null;
+  }
+  return sendEmail(type, user.email, data);
+};
+
 export const sendEmail = async (type: string, user: string, data: any) => {
   try {
+    // Resend's SMTP relay: the username is always "resend", the password is the API key.
     const transporter = await nodemailer.createTransport({
-      host: 'email-smtp.us-east-1.amazonaws.com',
-      port: 587,
-      secure: false,
+      host: 'smtp.resend.com',
+      port: 465,
+      secure: true,
       auth: {
-        user: process.env.NX_EMAIL_AUTH_USER,
-        pass: process.env.NX_EMAIL_AUTH_PASS,
+        user: 'resend',
+        pass: process.env.RESEND_API_KEY,
       },
     });
 
     await transporter.sendMail({
       from: '"OpenMined" <no-reply@openmined.org>',
+      replyTo: 'info@openmined.org',
       to: user,
       ...contentTypes[type](data),
     });
