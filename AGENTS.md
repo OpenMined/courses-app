@@ -19,6 +19,11 @@ Never commit credentials, keys, `.secret.*` files, internal hostnames or custome
 - Test in the emulators against a `demo-` project ID before deploying. Never point local tools at the production project to test.
 - A function that uses a secret declares it in `runWith({ secrets })`.
 
+## Sign-up
+
+- New email/password accounts are created only by the `createAccount` function, after a server-side Turnstile check. Don't create accounts from the browser: client-side sign-up is switched off in Firebase Auth.
+- Validation in `apps/firebase-api/src/app/signup.ts` mirrors the form's rules; change both together.
+
 ## Email
 
 - All email goes through `sendEmail` in `apps/firebase-api/src/app/email.ts` (Resend, from `no-reply@openmined.org`, Reply-To `info@openmined.org`).

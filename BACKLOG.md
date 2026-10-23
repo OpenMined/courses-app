@@ -11,7 +11,8 @@ Known work on the Courses platform, oldest-risk first. This file is a cache: che
 
 ## Sign-up
 
-- **Bot sign-ups.** Email/password sign-ups have no bot protection. Upgrade the web app's Firebase SDK (7.x) so Firebase Auth's reCAPTCHA protection can be turned on, starting in audit mode.
+- **Local config points at a dev project that no longer exists** (`openmined-org-dev` in `.local.env` and `.firebaserc`). Point local work at the emulators with a `demo-` project ID instead.
+- **Firebase JS SDK 7.x and reactfire 2** are long out of support. Upgrading touches about 36 files; plan it as its own project.
 
 ## Deploys
 
