@@ -34,6 +34,7 @@ typings
 
 # Secrets
 .secret.env
+.secret.local
 
 # System Files
 .DS_Store

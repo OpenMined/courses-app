@@ -70,7 +70,7 @@ export const assignReview = async (data, context) => {
       const assignment = notResignedAssignments[0];
 
       // Get the ID of the student from that assignment
-      const studentId = assignment.student._path.segments[1];
+      const studentId = assignment.student.id;
 
       const courseRef = admin
         .firestore()
