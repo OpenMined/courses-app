@@ -25,6 +25,7 @@ import {
 import { completeCourse } from './app/courses';
 import { sendEmailIfTrusted, EMAIL_SECRETS } from './app/email';
 import sanity from './app/sanity';
+import { createAccount, SIGNUP_SECRETS } from './app/signup';
 import { onCourseSubmissionUpdate } from './app/submissions';
 import { addUniqueNumberToUser, addUNumToAllUsers } from './app/users';
 
@@ -56,6 +57,12 @@ exports.checkForUnreviewedSubmissions = functions
 exports.completeCourse = functions
   .region('europe-west1')
   .https.onCall(completeCourse);
+
+// Create an email/password account after a Turnstile check
+exports.createAccount = functions
+  .region('europe-west1')
+  .runWith({ secrets: SIGNUP_SECRETS })
+  .https.onCall(createAccount);
 
 // Add unique number to each user
 exports.addUniqueNumberToUser = functions

@@ -59,9 +59,18 @@ NODE_OPTIONS=--openssl-legacy-provider yarn build firebase-api --prod
 To run the functions locally, start the emulators against a `demo-` project ID, which Firebase never connects to real resources. Functions that send email read `RESEND_API_KEY`; locally, put a placeholder in a `.secret.local` file at the repo root (it is gitignored):
 
 ```sh
-echo 'RESEND_API_KEY=re_placeholder' > .secret.local
+printf 'RESEND_API_KEY=re_placeholder\nTURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA\n' > .secret.local
 npx firebase-tools@13 emulators:start --project demo-courses --only auth,functions,firestore
 ```
+
+The web app only talks to the emulators when `window.Cypress` is set; otherwise `yarn start courses` connects to the **real** Firebase project. Set that flag (Cypress does it for you) before testing anything that writes data.
+
+#### Sign-up
+
+Email/password accounts are created by the `createAccount` callable function, not in the browser. The sign-up form shows a [Cloudflare Turnstile](https://developers.cloudflare.com/turnstile/) check, and `createAccount` verifies its token server-side before creating the account and its `users` document. Client-side sign-up is switched off in Firebase Auth (Settings → User actions), so the public API can't be used to create accounts directly.
+
+- `NX_TURNSTILE_SITE_KEY` (public) is in `.env`; `.local.env` uses Cloudflare's always-pass test key.
+- `TURNSTILE_SECRET_KEY` is a Firebase secret. For local testing, Cloudflare's test secrets are `1x0000000000000000000000000000000AA` (always passes) and `2x0000000000000000000000000000000AA` (always fails).
 
 #### Email
 
@@ -75,7 +84,7 @@ Deploy functions **by name**. The codebase exports some functions that are not d
 
 ```sh
 npx firebase-tools@13 deploy --project production \
-  --only functions:sendWelcomeEmail,functions:sendByeEmail,functions:startCourse,functions:receiveReview
+  --only functions:createAccount,functions:sendWelcomeEmail,functions:sendByeEmail,functions:startCourse,functions:receiveReview
 ```
 
 See [BACKLOG.md](BACKLOG.md) for the rest of the functions and other known issues.

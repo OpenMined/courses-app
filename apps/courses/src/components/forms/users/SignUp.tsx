@@ -11,10 +11,11 @@ import {
 } from '@chakra-ui/react';
 import { Link as RRDLink } from 'react-router-dom';
 import * as yup from 'yup';
-import { useAuth, useFirestore } from 'reactfire';
+import { useAuth, useFirestore, useFunctions } from 'reactfire';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 
 import Icon from '../../Icon';
+import Turnstile from '../../Turnstile';
 import Form from '../_form';
 import {
   validEmail,
@@ -52,6 +53,14 @@ export default ({ callback, ...props }: SignUpFormProps) => {
   const auth = useAuth();
   const db = useFirestore();
   const toast = useToast();
+
+  const functions: firebase.functions.Functions = useFunctions();
+  // @ts-ignore
+  functions.region = 'europe-west1';
+  const createAccount = functions.httpsCallable('createAccount');
+
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const [turnstileReset, setTurnstileReset] = useState(0);
 
   // In the event that we already have an account created by email and we try to sign up using Github
   // We need to ask the user for the password to their account and store these credentials somewhere
@@ -135,34 +144,29 @@ export default ({ callback, ...props }: SignUpFormProps) => {
   const onSubmit = ({ email, password, first_name, last_name }) => {
     analytics.logEvent('Sign Up', { method: 'email' });
 
-    return auth
-      .createUserWithEmailAndPassword(email, password)
-      .then(() => {
-        auth.currentUser.updateProfile({
-          displayName: `${first_name} ${last_name}`,
-        });
-
+    // The account (and its users doc) is created server-side after a Turnstile check
+    return createAccount({
+      email,
+      password,
+      first_name,
+      last_name,
+      turnstile_token: turnstileToken,
+    })
+      .then(() => auth.signInWithEmailAndPassword(email, password))
+      .then(() =>
         auth.currentUser
           .sendEmailVerification()
-          .then(() =>
-            db
-              .collection('users')
-              .doc(auth.currentUser.uid)
-              .set({
-                first_name: first_name,
-                last_name: last_name,
-                notification_preferences: ['project_reviews'],
-              })
-              .then(onSuccess)
-              .catch((error) => handleErrors(toast, error))
-          )
-          .catch((error) => handleErrors(toast, error));
-      })
+          .then(onSuccess)
+          .catch((error) => handleErrors(toast, error))
+      )
       .catch((error) => {
+        // Each Turnstile token works once, so get a new one for the next attempt
+        setTurnstileReset((n) => n + 1);
+
         // In the event that an account with this email already exists (because they signed up with Github)
         // Give their account a password and link the Github provider to the new email provider
         // Otherwise... handleErrors()
-        if (error.code === 'auth/email-already-in-use') {
+        if (error.code === 'already-exists') {
           handleAccountAlreadyExists({ email, password });
         } else {
           handleErrors(toast, error);
@@ -260,13 +264,18 @@ export default ({ callback, ...props }: SignUpFormProps) => {
         fields={fields}
         submit={(isDisabled, isSubmitting) => (
           <>
-            <Flex align="center" wrap="wrap" mt={6}>
+            <Turnstile
+              mt={6}
+              onToken={setTurnstileToken}
+              resetKey={turnstileReset}
+            />
+            <Flex align="center" wrap="wrap" mt={4}>
               <Button
                 mr={4}
                 mt={2}
                 colorScheme="black"
                 type="submit"
-                disabled={isDisabled}
+                disabled={isDisabled || !turnstileToken}
                 isLoading={isSubmitting}
               >
                 Sign Up
