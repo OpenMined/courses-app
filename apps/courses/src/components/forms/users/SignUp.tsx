@@ -246,7 +246,7 @@ export default ({ callback, ...props }: SignUpFormProps) => {
     last_name: requiredString,
     email: validEmail,
     password: validPassword,
-    passwordConfirm: validMatchingPassword('password'),
+    password_confirm: validMatchingPassword('password'),
   });
 
   const fields = [
@@ -262,7 +262,10 @@ export default ({ callback, ...props }: SignUpFormProps) => {
         onSubmit={onSubmit}
         schema={schema}
         fields={fields}
-        submit={(isDisabled, isSubmitting) => (
+        // Sign Up waits only for the Turnstile token. The form's isValid flag can stay
+        // false in onBlur mode even when every field is valid; submitting still runs
+        // the schema and shows field errors before anything is sent.
+        submit={(_isDisabled, isSubmitting) => (
           <>
             <Turnstile
               mt={6}
@@ -275,7 +278,7 @@ export default ({ callback, ...props }: SignUpFormProps) => {
                 mt={2}
                 colorScheme="black"
                 type="submit"
-                disabled={isDisabled || !turnstileToken}
+                disabled={!turnstileToken}
                 isLoading={isSubmitting}
               >
                 Sign Up
